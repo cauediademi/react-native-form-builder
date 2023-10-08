@@ -98,7 +98,6 @@ const styles = StyleSheet.create({
 Datepicker.propTypes = {
   name: PropTypes.string.isRequired,
   meta: PropTypes.object.isRequired,
-  value: PropTypes.string,
   style: PropTypes.object,
   onChangeInputValue: PropTypes.func,
   isMandatory: PropTypes.bool,
