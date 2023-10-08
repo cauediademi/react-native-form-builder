@@ -84,6 +84,7 @@ export default function DynamicForm({ formTemplate, onSubmit, buttonStyles }) {
           return (
             Component && (
               <Component
+                key={element.index}
                 index={element.index}
                 name={element.field_name}
                 meta={element.meta}
