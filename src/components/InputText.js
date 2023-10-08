@@ -10,7 +10,7 @@ export default function InputText(props) {
 
   return (
     <View style={[style?.container, styles.container]} key={name}>
-      <Text style={[style?.text, styles.text]}>{`${meta.label} ${
+      <Text style={[style?.title, styles.title]}>{`${meta.label} ${
         isMandatory ? '*' : ''
       }`}</Text>
       <TextInput
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     width: '95%',
     alignSelf: 'center',
   },
-  text: {
+  title: {
     marginTop: 10,
     fontSize: (width / 100) * 4,
     fontFamily: 'SFProDisplay-Medium',
