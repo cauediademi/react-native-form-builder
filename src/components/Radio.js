@@ -2,13 +2,12 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {
   Dimensions,
-  Image,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import { radioButton } from '../constant';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const { width, height } = Dimensions.get('window');
 
@@ -33,14 +32,13 @@ export default function Radio(props) {
             style={[style?.button, styles.button]}
             key={index}
           >
-            <Image
-              accessibilityLabel={`choose-option-${item.label}`}
-              style={[style?.radioImage, styles.radioImage]}
-              source={
+            <Icon
+              name={
                 value === (item.value || item.label)
-                  ? radioButton.selected
-                  : radioButton.unselected
+                  ? 'radiobox-marked'
+                  : 'radiobox-blank'
               }
+              size={style?.size || 20}
             />
             <Text style={[style?.text, styles.text]}>{item.label}</Text>
           </TouchableOpacity>
@@ -58,11 +56,6 @@ const styles = StyleSheet.create({
   },
   button: {
     flexDirection: 'row',
-  },
-  radioImage: {
-    height: 20,
-    width: 20,
-    resizeMode: 'contain',
   },
   text: {
     paddingLeft: 10,
