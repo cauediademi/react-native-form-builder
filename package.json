@@ -29,6 +29,7 @@
     "url": "https://github.com/CoffeeBeansLabs/react-native-form-builder/issues"
   },
   "dependencies": {
+    "moment-timezone": "^0.5.43",
     "prop-types": "^15.7.2",
     "react-native-date-picker": "^4.2.13",
     "react-native-elements": "3.4.3",

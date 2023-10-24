@@ -1,6 +1,6 @@
-import moment from 'moment';
+import moment from 'moment-timezone';
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Dimensions,
   StyleSheet,
@@ -13,15 +13,14 @@ import DatePicker from 'react-native-date-picker';
 const { width, height } = Dimensions.get('window');
 
 export default function Datepicker(props) {
-  const { name, value, meta, style, onChangeInputValue, isMandatory } = props;
+  let { value } = props;
+  const { name, meta, style, onChangeInputValue, isMandatory } = props;
   const [show, setShow] = useState(false);
-  const [dateValue, setDateValue] = useState(
-    value ? new Date(value) : new Date(moment().valueOf()),
-  );
 
-  useEffect(() => {
-    setDateValue(value ? new Date(value) : new Date(moment().valueOf()));
-  }, [value]);
+  // Converts both timestamp and string date values to be used by DatePicker
+  value = value
+    ? new Date(moment.tz(value, 'UTC').valueOf())
+    : new Date(moment.tz('UTC').valueOf());
 
   return (
     <View style={[style?.container, styles.container]}>
@@ -38,23 +37,23 @@ export default function Datepicker(props) {
           meta.text || meta.title
         } ${isMandatory ? '*' : ''}`}</Text>
         <Text style={[style?.date, styles.date]}>
-          {dateValue.getDate() +
+          {value.getDate() +
             '/' +
-            (dateValue.getMonth() + 1) +
+            (value.getMonth() + 1) +
             '/' +
-            dateValue.getFullYear()}
+            value.getFullYear()}
         </Text>
         <DatePicker
           key={name}
           modal={true}
           open={show}
-          date={dateValue}
+          date={value}
           mode={meta.mode || 'date'}
           locale={meta.locale}
           is24hourSource={true}
           onConfirm={(date) => {
             setShow(false);
-            let dateString = moment(date).format('YYYY-MM-DD'); // Convert date object to string
+            let dateString = moment(date).tz('UTC').format('YYYY-MM-DD'); // Convert date object to string in UTC
             onChangeInputValue(dateString); // Pass string to parent function
           }}
           title={meta.selectTitle}
