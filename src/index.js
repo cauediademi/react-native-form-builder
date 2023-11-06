@@ -101,7 +101,7 @@ export default function DynamicForm({ formTemplate, onSubmit, buttonStyles }) {
         })}
       <Button
         accessibilityLabel="submit-button"
-        title="Submit"
+        title={formTemplate?.buttonText || 'Submit'}
         buttonStyle={[styles.button, buttonStyles]}
         onPress={onSumbitButtonPress}
         disabled={!isValidFormFields}
@@ -115,9 +115,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   button: {
-    width: '40%',
-    alignSelf: 'center',
+    width: '50%',
     margin: 20,
+    padding: 12,
+    borderRadius: 32,
+    alignSelf: 'center',
+    justifyContent: 'center',
   },
 });
 
