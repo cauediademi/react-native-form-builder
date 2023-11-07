@@ -13,58 +13,67 @@ import DatePicker from 'react-native-date-picker';
 const { width, height } = Dimensions.get('window');
 
 export default function Datepicker(props) {
-  let { value } = props;
-  const { name, meta, style, onChangeInputValue, isMandatory } = props;
+  const {
+    value: initialValue,
+    name,
+    meta,
+    style,
+    onChangeInputValue,
+    isMandatory,
+  } = props;
   const [show, setShow] = useState(false);
+  const [date, setDate] = useState(
+    initialValue ? new Date(moment.tz(initialValue, 'UTC').valueOf()) : null,
+  );
 
-  // Converts both timestamp and string date values to be used by DatePicker
-  value = value
-    ? new Date(moment.tz(value, 'UTC').valueOf())
-    : new Date(moment.tz('UTC').valueOf());
+  const handleConfirm = (selectedDate) => {
+    setShow(false);
+
+    // TO BE ABLE TO INCLUDE ANY TIMEZONE WE NEED TO:
+    // Create a moment object with the selected date but reset the time to the start of the day
+    let momentDate = moment(selectedDate).startOf('day');
+    // Convert the moment object to UTC while keeping it at the start of the day
+    let utcDate = momentDate.clone().utc();
+    // Format the UTC date to a string and pass it to the onChangeInputValue prop
+    let dateString = utcDate.format('YYYY-MM-DD');
+    onChangeInputValue(dateString);
+
+    // Update the local date state if needed, keeping it as a local date object
+    setDate(momentDate.toDate());
+  };
 
   return (
     <View style={[style?.container, styles.container]}>
       <TouchableOpacity
         activeOpacity={1}
-        style={{
-          padding: 0,
-          height: 40,
-        }}
-        hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+        style={{ padding: 0, height: 40 }}
+        hitSlop={{ top: 5, bottom: 5, left: 20, right: 20 }}
         onPress={() => setShow(true)}
       >
         <Text style={[style?.title, styles.title]}>{`${
           meta.text || meta.title
         } ${isMandatory ? '*' : ''}`}</Text>
         <Text style={[style?.date, styles.date]}>
-          {value.getDate() +
-            '/' +
-            (value.getMonth() + 1) +
-            '/' +
-            value.getFullYear()}
+          {date ? moment(date).tz('UTC').format('DD/MM/YYYY') : ''}
         </Text>
+      </TouchableOpacity>
+      {show && (
         <DatePicker
           key={name}
           modal={true}
           open={show}
-          date={value}
+          date={date || new Date()} // Use a default date only when showing the picker
           mode={meta.mode || 'date'}
           locale={meta.locale}
           is24hourSource={true}
-          onConfirm={(date) => {
-            setShow(false);
-            let dateString = moment(date).tz('UTC').format('YYYY-MM-DD'); // Convert date object to string in UTC
-            onChangeInputValue(dateString); // Pass string to parent function
-          }}
+          onConfirm={handleConfirm}
           title={meta.selectTitle}
           confirmText={meta.confirmText}
           cancelText={meta.cancelText}
-          onCancel={() => {
-            setShow(false);
-          }}
+          onCancel={() => setShow(false)}
           style={[style?.dateInput, styles.dateInput]}
         />
-      </TouchableOpacity>
+      )}
     </View>
   );
 }
