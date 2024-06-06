@@ -46,7 +46,9 @@ export default function DynamicForm({ formTemplate, onSubmit, buttonStyles }) {
     return fields;
   };
 
-  const getValue = (element) => formFields[element.field_name]?.value;
+  const getValue = (element) => {
+    return formFields[element.field_name]?.value ?? element?.value;
+  };
 
   const onSumbitButtonPress = () => {
     onSubmit(formFields);
