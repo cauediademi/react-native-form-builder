@@ -26,7 +26,8 @@ export default function Radio(props) {
     </View>
   );
 }
-
+test sse;
+dasd;
 const styles = StyleSheet.create({
   container: {
     borderRadius: 2,
