@@ -24,6 +24,7 @@ export default function InputText(props) {
         accessibilityLabel={`input-${meta.label}`}
         editable
         placeholder={meta.placeholder}
+        placeholderTextColor="#999999"
         multiline={meta.multiline}
         numberOfLines={meta.numberOfLines}
       />
